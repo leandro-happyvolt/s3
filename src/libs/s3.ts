@@ -1,6 +1,6 @@
 // S3Client es el que nos va a permitir hacer la conexión
 // PutObjectCommand es el método que nos va a permitir subir el archivo
-import { S3Client, PutObjectCommand, ListObjectsCommand, GetObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand, ListObjectsCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import configs from '../configs'
 import fs from 'fs'
@@ -75,5 +75,15 @@ export const s3Download = async (fileName: string) => {
     message: null,
     success: true
   }
+}
+
+// s3 remove
+export const s3Remove = async (fileName: string) => {
+  const params = {
+    Bucket: configs.AWS_BUCKET_NAME,
+    Key: fileName
+  }
+  const command = new DeleteObjectCommand(params)
+  return s3Client.send(command)
 }
 
